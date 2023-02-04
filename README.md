@@ -1,16 +1,18 @@
-# archa
+# Parking Meter App
 
-A new Flutter project.
+## Author: Yonas Sisay
 
-## Getting Started
+The Frontend for the Archa Coding Interview.
 
-This project is a starting point for a Flutter application.
+## Project details
 
-A few resources to get you started if this is your first Flutter project:
+- Flutter version - 3.0.5
+- XCode Version - 14.2
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Screenshots
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+![This is a alt text.](/image/sample.png "This is a sample image.")
+
+## Resources
+
+You may be using [tutorial](https://markdownlivepreview.com/).
