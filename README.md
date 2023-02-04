@@ -14,7 +14,7 @@ The Frontend for the Archa Coding Interview.
 
 - Street name search with suggestions provided
 - Map View of search results availble
-- Filtering of Parking Meter depedning on availablity of Credit Card or Tap and Go
+- Filtering of Parking Meter depending on availability of Credit Card or Tap and Go
 - Dark Mode capabilites for users to access during different times of the day
 - Parking Meter details display with link to map
 
@@ -32,7 +32,7 @@ In this project i have opted into to using a simple architecture. I have used pr
 
 ##### Meter Provider
 
-- This model might have the same logic as search but its distinction is that this will be used on later on in the project to act as a manager of making CRUD operations in relation to Parking Meters in the server.
+- This provider might have the same logic as search but its distinction is that this will be used on later on in the project to act as a manager of making CRUD operations in relation to Parking Meters in the server.
 
 ### Known issues
 
