@@ -1,3 +1,4 @@
+import 'package:archa/providers/search_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:archa/app.dart';
 import 'package:provider/provider.dart';
@@ -16,6 +17,9 @@ void runFrontendApp() {
       ),
       ChangeNotifierProvider(
         create: (_) => MeterProvider(),
+      ),
+      ChangeNotifierProvider(
+        create: (_) => SearchProvider(),
       ),
     ],
     child: FrontendApp(),

@@ -1,17 +1,18 @@
-import 'package:archa/api/api.dart';
-import 'package:archa/providers/app_state_provider.dart';
-import 'package:archa/providers/meter_provider.dart';
-import 'package:archa/screens/map/custom_map_view.dart';
-import 'package:archa/widgets/meter_list.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:archa/api/api.dart';
 import 'package:provider/provider.dart';
+import 'package:archa/providers/app_state_provider.dart';
+import 'package:archa/providers/meter_provider.dart';
+import 'package:archa/providers/search_provider.dart';
+import 'package:archa/screens/map/custom_map_view.dart';
+import 'package:archa/widgets/meter_list.dart';
 
 class CustomSearchDelegate extends SearchDelegate {
   CustomSearchDelegate();
 
   var suggestion = [];
-  List searchResult = [];
+  List<ParkingMeter> searchResult = [];
 
   @override
   List<Widget>? buildActions(BuildContext context) {
@@ -40,42 +41,63 @@ class CustomSearchDelegate extends SearchDelegate {
     searchResult.clear();
     var isDarkMode =
         Provider.of<AppStateProvider>(context, listen: false).isDarkMode;
-    return DefaultTabController(
-      length: 2,
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TabBar(
-              labelColor: isDarkMode ? Colors.white : Colors.black,
-              unselectedLabelColor: Colors.grey,
-              tabs: const [
-                Tab(
-                  icon: Icon(Icons.list),
-                  text: "List",
+    return FutureBuilder(
+        future: apiSearch(context),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            var searchProvider =
+                Provider.of<SearchProvider>(context, listen: false);
+            searchResult = searchProvider.searchResults;
+
+            return DefaultTabController(
+              length: 2,
+              child: SingleChildScrollView(
+                physics: NeverScrollableScrollPhysics(),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    TabBar(
+                      labelColor: Colors.black, //<-- selected text color
+                      unselectedLabelColor: Colors.grey,
+                      tabs: [
+                        Tab(
+                          icon: Icon(
+                            Icons.list,
+                            color: Colors.black,
+                          ),
+                          text: "List",
+                        ),
+                        Tab(
+                          icon: Icon(
+                            Icons.map,
+                            color: Colors.black,
+                          ),
+                          text: "Map",
+                        )
+                      ],
+                    ),
+                    Container(
+                      //Add this to give height
+                      height: MediaQuery.of(context).size.height,
+                      child: TabBarView(children: [
+                        Container(
+                          margin: EdgeInsets.all(20),
+                          child: MeterList(records: searchResult),
+                        ),
+                        // Container(
+                        //   child: Text("map view"),
+                        // )
+                        CustomMapView(),
+                      ]),
+                    ),
+                  ],
                 ),
-                Tab(
-                  icon: Icon(Icons.map),
-                  text: "Map",
-                )
-              ],
-            ),
-            Container(
-              height: MediaQuery.of(context).size.height,
-              child: TabBarView(
-                children: [
-                  Container(
-                    margin: const EdgeInsets.all(20),
-                    child: MeterList(),
-                  ),
-                  CustomMapView(),
-                ],
               ),
-            )
-          ],
-        ),
-      ),
-    );
+            );
+          } else {
+            return Center(child: CircularProgressIndicator());
+          }
+        });
   }
 
   @override
@@ -110,5 +132,12 @@ class CustomSearchDelegate extends SearchDelegate {
       ),
       itemCount: suggestionList.length,
     );
+  }
+
+  Future apiSearch(BuildContext context) async {
+    var refinedQuery = query;
+
+    var searchProvider = Provider.of<SearchProvider>(context, listen: false);
+    return searchProvider.search(refinedQuery);
   }
 }
