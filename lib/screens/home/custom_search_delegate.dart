@@ -135,9 +135,14 @@ class CustomSearchDelegate extends SearchDelegate {
   }
 
   Future apiSearch(BuildContext context) async {
-    var refinedQuery = query;
+    var refinedQuery = getRefinedQuery();
 
     var searchProvider = Provider.of<SearchProvider>(context, listen: false);
     return searchProvider.search(refinedQuery);
+  }
+
+  String getRefinedQuery() {
+    String retValue = "&q=${query}";
+    return retValue;
   }
 }
