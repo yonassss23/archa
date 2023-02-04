@@ -23,9 +23,9 @@ class _CustomMapViewState extends State<CustomMapView> {
         : null;
 
     List<Marker> _markers;
-
+    ParkingMeter? meter;
     if (recordId != null) {
-      ParkingMeter meter =
+      meter =
           Provider.of<MeterProvider>(context, listen: false).findById(recordId);
       _markers = [
         Marker(
@@ -56,9 +56,11 @@ class _CustomMapViewState extends State<CustomMapView> {
     }
 
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text("${meter.meterId}"),
-      // ),
+      appBar: meter != null
+          ? AppBar(
+              title: Text("${meter.meterId}"),
+            )
+          : null,
       body: FlutterMap(
         options: MapOptions(
           center: LatLng(double.parse(_markers[0].point.latitude.toString()),

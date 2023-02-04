@@ -15,6 +15,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  RefineType _creditCard = RefineType.YES;
+  RefineType? _tapAndGo;
+
   List<Widget> icons = [
     Icon(Icons.sunny),
     Icon(Icons.dark_mode),
@@ -43,11 +46,22 @@ class _HomeScreenState extends State<HomeScreen> {
               IconButton(
                 onPressed: () {
                   showSearch(
-                      context: context, delegate: CustomSearchDelegate());
+                      context: context,
+                      delegate: CustomSearchDelegate(
+                        creditCardValue: _creditCard,
+                        tapAndGoValue: _tapAndGo,
+                      ));
                 },
                 icon: Icon(FontAwesomeIcons.search),
               ),
-              IconButton(onPressed: () {}, icon: Icon(FontAwesomeIcons.sort))
+              IconButton(
+                icon: Icon(
+                  Icons.filter_list,
+                ),
+                onPressed: () async {
+                  await showFilterDialog(context);
+                },
+              ),
             ],
           ),
           SliverToBoxAdapter(
@@ -87,5 +101,149 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
     );
+  }
+
+  Future<void> showFilterDialog(BuildContext context) {
+    return showDialog(
+        context: context,
+        builder: (BuildContext build) {
+          return StatefulBuilder(builder: (context, setState) {
+            return AlertDialog(
+              title: Center(
+                  child: Text(
+                "Filter",
+                // style: TextStyle(color: mainColor),
+              )),
+              content: SingleChildScrollView(
+                child: Column(
+                  children: <Widget>[
+                    Container(
+                      padding: EdgeInsets.only(top: 12, right: 10),
+                      child: Row(
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.only(right: 16.0),
+                            child: Icon(
+                              Icons.credit_card,
+                              // color: Color(0xff808080),
+                            ),
+                          ),
+                          Expanded(
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownButton<RefineType>(
+                                isExpanded: true,
+                                hint: Text("Credit Card"),
+                                items: <RefineType>[
+                                  RefineType.YES,
+                                ].map((RefineType value) {
+                                  return DropdownMenuItem(
+                                    value: value,
+                                    child: Text(value.name.toUpperCase(),
+                                        style: TextStyle(
+                                          // color: textColor,
+                                          fontSize: 16,
+                                        )),
+                                  );
+                                }).toList(),
+                                value: _creditCard,
+                                onChanged: (newValue) {
+                                  onCreditCardChange(newValue!);
+                                  setState((() {}));
+                                },
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.only(top: 8, right: 10),
+                      child: Row(
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.only(right: 16.0),
+                            child: Icon(
+                              Icons.tap_and_play,
+                              // color: Color(0xff808080),
+                            ),
+                          ),
+                          Expanded(
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownButton<RefineType>(
+                                isExpanded: true,
+                                hint: Text("Select ..."),
+                                items: <RefineType>[
+                                  RefineType.YES,
+                                  RefineType.NO,
+                                  RefineType.BOTH
+                                ].map((RefineType value) {
+                                  return DropdownMenuItem(
+                                    value: value,
+                                    child: Text(value.name.toUpperCase(),
+                                        style: TextStyle(
+                                          // color: textColor,
+                                          fontSize: 16,
+                                        )),
+                                  );
+                                }).toList(),
+                                value: _tapAndGo,
+                                onChanged: (newValue) {
+                                  onTapAndGoChange(newValue!);
+                                  setState((() {}));
+                                },
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          });
+        });
+  }
+
+  void onCreditCardChange(RefineType value) {
+    setState(() {
+      _creditCard = value;
+    });
+  }
+
+  void onTapAndGoChange(RefineType value) {
+    setState(() {
+      _tapAndGo = value;
+    });
+  }
+}
+
+enum RefineField { CREDITCARD, TAPANDGO, STREETNAME }
+
+extension RefineFieldExtension on RefineField {
+  String get name {
+    switch (this) {
+      case RefineField.CREDITCARD:
+        return 'Credit Card';
+      case RefineField.TAPANDGO:
+        return 'Tap And Go';
+      case RefineField.STREETNAME:
+        return 'Street Name';
+    }
+  }
+}
+
+enum RefineType { YES, NO, BOTH }
+
+extension RefineTypeExtension on RefineType {
+  String get name {
+    switch (this) {
+      case RefineType.YES:
+        return 'YES';
+      case RefineType.NO:
+        return 'NO';
+      case RefineType.BOTH:
+        return 'BOTH';
+    }
   }
 }

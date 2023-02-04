@@ -1,3 +1,4 @@
+import 'package:archa/screens/home/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:archa/api/api.dart';
@@ -9,7 +10,12 @@ import 'package:archa/screens/map/custom_map_view.dart';
 import 'package:archa/widgets/meter_list.dart';
 
 class CustomSearchDelegate extends SearchDelegate {
-  CustomSearchDelegate();
+  CustomSearchDelegate({
+    required this.creditCardValue,
+    this.tapAndGoValue,
+  });
+  RefineType creditCardValue;
+  RefineType? tapAndGoValue;
 
   var suggestion = [];
   List<ParkingMeter> searchResult = [];
@@ -143,6 +149,31 @@ class CustomSearchDelegate extends SearchDelegate {
 
   String getRefinedQuery() {
     String retValue = "&q=${query}";
+
+    switch (creditCardValue) {
+      case RefineType.YES:
+        retValue += '&refine.creditcard=YES';
+        break;
+      case RefineType.NO:
+        retValue += '&refine.creditcard=NO';
+        break;
+      case RefineType.BOTH:
+        retValue += '';
+        break;
+      default:
+    }
+    switch (tapAndGoValue) {
+      case RefineType.YES:
+        retValue += '&refine.tapandgo=YES';
+        break;
+      case RefineType.NO:
+        retValue += '&refine.tapandgo=NO';
+        break;
+      case RefineType.BOTH:
+        retValue += '';
+        break;
+      default:
+    }
     return retValue;
   }
 }
