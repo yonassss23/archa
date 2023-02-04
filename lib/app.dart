@@ -1,3 +1,4 @@
+import 'package:archa/screens/map/custom_map_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:archa/providers/app_state_provider.dart';
@@ -15,13 +16,15 @@ class _FrontendAppState extends State<FrontendApp> {
   Widget build(BuildContext context) {
     var appState = Provider.of<AppStateProvider>(context);
     return MaterialApp(
-      title: 'Parking Meter App',
-      themeMode: appState.isDarkMode ? ThemeMode.dark : ThemeMode.light,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      darkTheme: ThemeData.dark(),
-      home: HomeScreen(),
-    );
+        title: 'Parking Meter App',
+        themeMode: appState.isDarkMode ? ThemeMode.dark : ThemeMode.light,
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        darkTheme: ThemeData.dark(),
+        home: HomeScreen(),
+        routes: {
+          CustomMapView.routeName: (context) => CustomMapView(),
+        });
   }
 }
