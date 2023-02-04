@@ -1,4 +1,5 @@
 import 'package:archa/providers/app_state_provider.dart';
+import 'package:archa/screens/home/custom_search_delegate.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -32,7 +33,10 @@ class _HomeScreenState extends State<HomeScreen> {
             title: Text("Parking Meter App"),
             actions: [
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  showSearch(
+                      context: context, delegate: CustomSearchDelegate());
+                },
                 icon: Icon(FontAwesomeIcons.search),
               ),
               IconButton(onPressed: () {}, icon: Icon(FontAwesomeIcons.sort))
