@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:archa/app.dart';
-import 'package:archa/providers/app_state_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:archa/providers/app_state_provider.dart';
+import 'package:archa/providers/meter_provider.dart';
 
 void main() {
   runFrontendApp();
@@ -12,6 +13,9 @@ void runFrontendApp() {
     providers: [
       ChangeNotifierProvider(
         create: (_) => AppStateProvider(),
+      ),
+      ChangeNotifierProvider(
+        create: (_) => MeterProvider(),
       ),
     ],
     child: FrontendApp(),

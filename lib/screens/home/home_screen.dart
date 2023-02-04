@@ -1,4 +1,5 @@
 import 'package:archa/providers/app_state_provider.dart';
+import 'package:archa/providers/meter_provider.dart';
 import 'package:archa/screens/home/custom_search_delegate.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
@@ -20,6 +21,13 @@ class _HomeScreenState extends State<HomeScreen> {
   ];
 
   List<bool> _selectedMode = [true, false];
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    Provider.of<MeterProvider>(context).fetchMeters('');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

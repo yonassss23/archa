@@ -1,4 +1,6 @@
+import 'package:archa/api/api.dart';
 import 'package:archa/providers/app_state_provider.dart';
+import 'package:archa/providers/meter_provider.dart';
 import 'package:archa/screens/map/custom_map_view.dart';
 import 'package:archa/widgets/meter_list.dart';
 import 'package:flutter/material.dart';
@@ -78,9 +80,34 @@ class CustomSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    final suggestionList = query.isEmpty ? suggestion : [];
+    FacetGroup group =
+        Provider.of<MeterProvider>(context, listen: false).getByFacetGroup("");
+    var streets = group.facets!.map((e) => e.name!.toLowerCase()).toList();
+
+    final suggestionList = query.isEmpty
+        ? suggestion
+        : streets.where((element) {
+            return element.contains(query.toLowerCase());
+          }).toList();
     return ListView.builder(
-      itemBuilder: ((context, index) => ListTile()),
+      itemBuilder: (context, index) => ListTile(
+        onTap: () {
+          query = suggestionList[index];
+        },
+        leading: Icon(query.isEmpty ? Icons.history : Icons.search),
+        title: RichText(
+          text: TextSpan(
+              text: suggestionList[index].toString().substring(0, query.length),
+              style: TextStyle(color: Colors.grey),
+              children: [
+                TextSpan(
+                  text:
+                      suggestionList[index].toString().substring(query.length),
+                  style: TextStyle(color: Colors.grey),
+                )
+              ]),
+        ),
+      ),
       itemCount: suggestionList.length,
     );
   }
