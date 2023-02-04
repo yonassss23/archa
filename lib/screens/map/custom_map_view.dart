@@ -75,7 +75,8 @@ class _CustomMapViewState extends State<CustomMapView> {
             urlTemplate: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
             subdomains: ['a', 'b', 'c'],
           ),
-          MarkerLayerOptions(markers: _markers)
+          MarkerLayerOptions(markers: _markers),
+          
         ],
       ),
     );

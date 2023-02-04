@@ -18,44 +18,48 @@ class _MeterListState extends State<MeterList> {
   Widget build(BuildContext context) {
     // var meters = Provider.of<MeterProvider>(context).items;
     var records = widget.records;
-    return Expanded(
-      child: ListView.builder(
-        itemCount: records.length,
-        itemBuilder: ((context, index) {
-          return GestureDetector(
-            onTap: (() {
-              Navigator.of(context)
-                  .pushNamed("/meter", arguments: records[index].recordId);
-            }),
-            child: Card(
-              child: ListTile(
-                title: Text(
-                    "${records[index].streetName} | ${records[index].meterId}"),
-                subtitle: Text(
-                    "${records[index].barcode} | ${records[index].meterType}"),
-                trailing: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    if (records[index].creditCard == "YES") ...[
-                      const Icon(
-                        FontAwesomeIcons.creditCard,
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                    ],
-                    if (records[index].tapAndGo == "YES") ...[
-                      const Icon(
-                        FontAwesomeIcons.mobile,
-                      )
-                    ]
-                  ],
+    return Column(
+      children: [
+        Expanded(
+          child: ListView.builder(
+            itemCount: records.length,
+            itemBuilder: ((context, index) {
+              return GestureDetector(
+                onTap: (() {
+                  Navigator.of(context)
+                      .pushNamed("/meter", arguments: records[index].recordId);
+                }),
+                child: Card(
+                  child: ListTile(
+                    title: Text(
+                        "${records[index].streetName} | ${records[index].meterId}"),
+                    subtitle: Text(
+                        "${records[index].barcode} | ${records[index].meterType}"),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        if (records[index].creditCard == "YES") ...[
+                          const Icon(
+                            FontAwesomeIcons.creditCard,
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                        ],
+                        if (records[index].tapAndGo == "YES") ...[
+                          const Icon(
+                            FontAwesomeIcons.mobile,
+                          )
+                        ]
+                      ],
+                    ),
+                  ),
                 ),
-              ),
-            ),
-          );
-        }),
-      ),
+              );
+            }),
+          ),
+        ),
+      ],
     );
   }
 }
